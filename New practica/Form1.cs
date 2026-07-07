@@ -26,7 +26,7 @@ public partial class Form1 : Form
 
     private void BuildUI()
     {
-        Text = "—ортировка Ўелла Ч Shell Sort";
+        Text = "—ортировка Ўелла";
         ClientSize = new Size(680, 600);
         MinimumSize = new Size(500, 540);
         StartPosition = FormStartPosition.CenterScreen;
@@ -38,7 +38,7 @@ public partial class Form1 : Form
         pnlHeader.Height = 50;
         pnlHeader.BackColor = Color.FromArgb(37, 99, 235);
 
-        lblTitle.Text = "—ортировка Ўелла (Shell Sort)";
+        lblTitle.Text = "—ортировка Ўелла";
         lblTitle.Font = new Font("Segoe UI", 13f, FontStyle.Bold);
         lblTitle.ForeColor = Color.White;
         lblTitle.AutoSize = true;
@@ -46,7 +46,7 @@ public partial class Form1 : Form
         pnlHeader.Controls.Add(lblTitle);
 
         // ¬вод
-        SetLabel(lblInput, "¬ведите числа", 12, 64);
+        SetLabel(lblInput, "¬ведите числа через зап€тую или пробел:", 12, 64);
         txtInput.Location = new Point(12, 84);
         txtInput.Width = 652;
         txtInput.Font = new Font("Consolas", 10f);
