@@ -86,7 +86,7 @@ public partial class Form1 : Form
 
     private void BuildUI()
     {
-        Text = "Сортировка Шелла — P/Invoke (C + C#)";
+        Text = "Сортировка Шелла";
         ClientSize = new Size(680, 630);
         MinimumSize = new Size(500, 570);
         StartPosition = FormStartPosition.CenterScreen;
@@ -97,7 +97,7 @@ public partial class Form1 : Form
         pnlHeader.Height = 50;
         pnlHeader.BackColor = Color.FromArgb(37, 99, 235);
 
-        lblTitle.Text = "Сортировка Шелла — C + C# (P/Invoke)";
+        lblTitle.Text = "Сортировка Шелла";
         lblTitle.Font = new Font("Segoe UI", 13f, FontStyle.Bold);
         lblTitle.ForeColor = Color.White;
         lblTitle.AutoSize = true;
