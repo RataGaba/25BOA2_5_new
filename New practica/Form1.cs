@@ -1,20 +1,20 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace New_practica;
+namespace Practica;
 
 [StructLayout(LayoutKind.Sequential)]
 public struct SortStats
 {
-    public long Comparisons;
+    public long Comparisons;   
     public long Swaps;
     public double TimeMs;
 }
 
 public static class ShellSorter
 {
-
+    
     private const string DLL = "shell_sort";
 
     [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
@@ -25,7 +25,7 @@ public static class ShellSorter
 
     public static (int[] sorted, SortStats stats) Sort(int[] input)
     {
-
+ 
         int[] arr = (int[])input.Clone();
         var stats = new SortStats();
 
@@ -40,7 +40,7 @@ public partial class Form1 : Form
 {
     private Panel pnlHeader = new();
     private Label lblTitle = new();
-    private Label lblDll = new();
+    private Label lblDll = new();   
     private Label lblInput = new();
     private TextBox txtInput = new();
     private Button btnSort = new();
@@ -86,7 +86,7 @@ public partial class Form1 : Form
 
     private void BuildUI()
     {
-        Text = "Сортировка Шелла";
+        Text = "Сортировка Шелла — P/Invoke (C + C#)";
         ClientSize = new Size(680, 630);
         MinimumSize = new Size(500, 570);
         StartPosition = FormStartPosition.CenterScreen;
@@ -97,7 +97,7 @@ public partial class Form1 : Form
         pnlHeader.Height = 50;
         pnlHeader.BackColor = Color.FromArgb(37, 99, 235);
 
-        lblTitle.Text = "Сортировка Шелла";
+        lblTitle.Text = "Сортировка Шелла — C + C# (P/Invoke)";
         lblTitle.Font = new Font("Segoe UI", 13f, FontStyle.Bold);
         lblTitle.ForeColor = Color.White;
         lblTitle.AutoSize = true;
@@ -229,7 +229,7 @@ public partial class Form1 : Form
         txtResult.Text = string.Empty;
         txtLog.Text = string.Empty;
     }
-
+    
     // Настюша
     private void OnLoad(object? sender, EventArgs e)
     {
