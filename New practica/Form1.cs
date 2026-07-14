@@ -1,11 +1,8 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
 
-namespace New_practica;
+namespace Practica;
 
-// =====================================================
-//  Структура результата (должна совпадать с C-кодом)
-// =====================================================
 [StructLayout(LayoutKind.Sequential)]
 public struct SortStats
 {
@@ -14,9 +11,6 @@ public struct SortStats
     public double TimeMs;
 }
 
-// =====================================================
-//  P/Invoke — вызов функции из shell_sort.dll
-// =====================================================
 public static class ShellSorter
 {
     private const string DLL = "shell_sort";
@@ -36,9 +30,6 @@ public static class ShellSorter
     }
 }
 
-// =====================================================
-//  Главная форма
-// =====================================================
 public partial class Form1 : Form
 {
     private Panel pnlHeader = new();
@@ -47,10 +38,7 @@ public partial class Form1 : Form
     private Label lblInput = new();
     private TextBox txtInput = new();
     private Button btnSort = new();
-    private Button btnRandom = new();
     private Button btnClear = new();
-    private Label lblCount = new();
-    private NumericUpDown numCount = new();
     private Button btnLoad = new();
     private Button btnSave = new();
     private Label lblResult = new();
@@ -65,7 +53,6 @@ public partial class Form1 : Form
         CheckDll();
     }
 
-    // Проверка DLL при старте
     private void CheckDll()
     {
         string dllPath = Path.Combine(
@@ -79,7 +66,7 @@ public partial class Form1 : Form
         }
         else
         {
-            lblDll.Text = "✘ shell_sort.dll не найдена! Скомпилируйте C-файл.";
+            lblDll.Text = "✘ shell_sort.dll не найдена! Сначала скомпилируйте C-файл.";
             lblDll.ForeColor = Color.FromArgb(220, 53, 69);
             btnSort.Enabled = false;
         }
@@ -88,8 +75,8 @@ public partial class Form1 : Form
     private void BuildUI()
     {
         Text = "Сортировка Шелла — P/Invoke (C + C#)";
-        ClientSize = new Size(680, 630);
-        MinimumSize = new Size(500, 570);
+        ClientSize = new Size(680, 600);
+        MinimumSize = new Size(500, 540);
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = Color.FromArgb(240, 244, 248);
         Font = new Font("Segoe UI", 9.5f);
@@ -113,32 +100,26 @@ public partial class Form1 : Form
 
         // Ввод
         SetLabel(lblInput, "Введите числа через запятую или пробел:", 12, 84);
+
         txtInput.Location = new Point(12, 104);
         txtInput.Width = 652;
         txtInput.Font = new Font("Consolas", 10f);
         txtInput.BackColor = Color.White;
         txtInput.Text = "64, 34, 25, 12, 22, 11, 90, 55, 3, 78";
 
-        // Ряд 1
+        // Ряд 1: Сортировать / Очистить
         SetBtn(btnSort, "Сортировать (C)", Color.FromArgb(37, 99, 235), 12, 140);
-        SetBtn(btnRandom, "Случайный", Color.FromArgb(16, 185, 129), 174, 140);
-        SetBtn(btnClear, "Очистить", Color.FromArgb(220, 53, 69), 336, 140);
+        SetBtn(btnClear, "Очистить", Color.FromArgb(220, 53, 69), 174, 140);
+
         btnSort.Width = 150;
 
         btnSort.Click += OnSort;
-        btnRandom.Click += OnRandom;
         btnClear.Click += OnClear;
 
-        SetLabel(lblCount, "Кол-во:", 490, 148);
-        numCount.Location = new Point(546, 144);
-        numCount.Width = 80;
-        numCount.Minimum = 2;
-        numCount.Maximum = 50000;
-        numCount.Value = 20;
-
-        // Ряд 2
+        // Ряд 2: Загрузить / Сохранить
         SetBtn(btnLoad, "Загрузить из файла", Color.FromArgb(108, 43, 217), 12, 182);
         SetBtn(btnSave, "Сохранить в файл", Color.FromArgb(13, 110, 253), 220, 182);
+
         btnLoad.Width = 196;
         btnSave.Width = 196;
 
@@ -147,6 +128,7 @@ public partial class Form1 : Form
 
         // Результат
         SetLabel(lblResult, "Отсортированный массив:", 12, 228);
+
         txtResult.Location = new Point(12, 248);
         txtResult.Width = 652;
         txtResult.Font = new Font("Consolas", 10f);
@@ -156,9 +138,10 @@ public partial class Form1 : Form
 
         // Лог
         SetLabel(lblLog, "Лог / статистика:", 12, 284);
+
         txtLog.Location = new Point(12, 304);
         txtLog.Width = 652;
-        txtLog.Height = 282;
+        txtLog.Height = 252;
         txtLog.Multiline = true;
         txtLog.ReadOnly = true;
         txtLog.ScrollBars = ScrollBars.Vertical;
@@ -171,16 +154,12 @@ public partial class Form1 : Form
             pnlHeader,
             lblDll,
             lblInput,  txtInput,
-            btnSort,   btnRandom, btnClear, lblCount, numCount,
+            btnSort,   btnClear,
             btnLoad,   btnSave,
             lblResult, txtResult,
             lblLog,    txtLog
         });
     }
-
-    // =====================================================
-    //  Обработчики
-    // =====================================================
 
     private void OnSort(object? sender, EventArgs e)
     {
@@ -189,6 +168,7 @@ public partial class Form1 : Form
         try
         {
             var (sorted, stats) = ShellSorter.Sort(nums);
+
             txtResult.Text = string.Join(", ", sorted);
 
             LogLine(
@@ -202,26 +182,16 @@ public partial class Form1 : Form
         {
             MessageBox.Show(
                 "Файл shell_sort.dll не найден!\n\n" +
-                "Скомпилируйте:\n" +
-                "gcc shell_sort.c -shared -o shell_sort.dll -std=c99 -O2 -lkernel32",
+                "Скомпилируйте C-файл командой:\n" +
+                "gcc shell_sort.c -shared -o shell_sort.dll -std=c99 -O2 -lkernel32\n\n" +
+                "И положите shell_sort.dll в папку с .exe",
                 "DLL не найдена", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Ошибка:\n{ex.Message}",
+            MessageBox.Show($"Ошибка вызова C-кода:\n{ex.Message}",
                 "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-    }
-
-    private void OnRandom(object? sender, EventArgs e)
-    {
-        var rng = new Random();
-        int n = (int)numCount.Value;
-        var arr = new int[n];
-        for (int i = 0; i < n; i++)
-            arr[i] = rng.Next(1, 10000);
-        txtInput.Text = string.Join(", ", arr);
-        txtResult.Text = string.Empty;
     }
 
     private void OnClear(object? sender, EventArgs e)
@@ -260,7 +230,7 @@ public partial class Form1 : Form
                 if (!int.TryParse(t, out _))
                 {
                     MessageBox.Show($"Найдено не число: \"{t}\"",
-                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        "Ошибка формата", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
@@ -302,7 +272,7 @@ public partial class Form1 : Form
         try
         {
             string content =
-                $"Сортировка Шелла — результат (P/Invoke)\r\n" +
+                $"Сортировка Шелла — результат (C + C# P/Invoke)\r\n" +
                 $"Дата: {DateTime.Now:dd.MM.yyyy HH:mm:ss}\r\n" +
                 $"--------------------------------------------------\r\n" +
                 $"Отсортированный массив:\r\n{txtResult.Text}\r\n";
@@ -322,10 +292,6 @@ public partial class Form1 : Form
                 "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
-
-    // =====================================================
-    //  Вспомогательные методы
-    // =====================================================
 
     private bool TryParse(out int[] nums)
     {
