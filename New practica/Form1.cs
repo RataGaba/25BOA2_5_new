@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Practica;
+namespace New_practica;
 
 [StructLayout(LayoutKind.Sequential)]
 public struct SortStats
